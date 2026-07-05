@@ -146,6 +146,29 @@ body {
   margin-bottom: 4px;
 }
 
+.gif-gato {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--rosa-texto-suave);
+  display: block;
+}
+
+.giphy-credito {
+  display: block;
+  text-align: center;
+  font-size: 0.55rem;
+  color: var(--rosa-texto-suave);
+  opacity: 0.7;
+  margin-top: 3px;
+}
+
+.dia-icone-emoji {
+  font-size: 1.5rem;
+  display: block;
+}
+
 .temperatura {
   margin: 0;
   font-family: "Baloo 2", sans-serif;
