@@ -1,0 +1,305 @@
+/* =========================================================
+   Para você, todo dia 💗 — style.css
+   ========================================================= */
+
+:root {
+  --rosa-topo: #ff4fa8;
+  --rosa-meio: #ff8dc7;
+  --rosa-base: #ffd9ec;
+  --rosa-texto: #e0257e;
+  --rosa-texto-suave: #ff6bb0;
+  --branco: #ffffff;
+  --sombra-circulo: 0 0 60px rgba(255, 255, 255, 0.55), 0 20px 50px rgba(224, 37, 126, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Quicksand", sans-serif;
+  background: linear-gradient(180deg, var(--rosa-topo) 0%, var(--rosa-meio) 35%, var(--rosa-base) 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------
+   Decorações: fogos e estrelinhas nos cantos
+   --------------------------------------------------------- */
+.fogo {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  opacity: 0.85;
+  animation: cintilar-fogo 3s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.fogo-esquerda {
+  top: 30px;
+  left: -20px;
+}
+
+.fogo-direita {
+  top: 90px;
+  right: -10px;
+  animation-delay: 1.2s;
+}
+
+@keyframes cintilar-fogo {
+  from {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.estrela {
+  position: absolute;
+  color: var(--branco);
+  font-size: 1.4rem;
+  opacity: 0.9;
+  animation: piscar 2.4s ease-in-out infinite;
+}
+
+.estrela-1 { top: 60px; left: 30px; font-size: 1rem; animation-delay: 0s; }
+.estrela-2 { top: 220px; left: 15px; font-size: 0.8rem; animation-delay: 0.6s; }
+.estrela-3 { top: 250px; right: 40px; font-size: 1.1rem; animation-delay: 1s; }
+.estrela-4 { top: 340px; right: 20px; font-size: 0.8rem; animation-delay: 1.6s; }
+
+@keyframes piscar {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fogo, .estrela {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------
+   Container principal
+   --------------------------------------------------------- */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 22px 40px;
+}
+
+/* ---------------------------------------------------------
+   Cabeçalho
+   --------------------------------------------------------- */
+.app-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.saudacao {
+  margin: 0 0 8px;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  font-size: 1.55rem;
+  color: var(--branco);
+  text-shadow: 0 2px 10px rgba(224, 37, 126, 0.4);
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------------------------------------------------------
+   Círculo de destaque
+   --------------------------------------------------------- */
+.circulo-tempo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.circulo-conteudo {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #fff 0%, #ffeaf5 70%, #ffd9ec 100%);
+  border: 5px solid var(--branco);
+  box-shadow: var(--sombra-circulo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.icone-tempo {
+  margin-bottom: 4px;
+}
+
+.temperatura {
+  margin: 0;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 3.4rem;
+  color: var(--rosa-texto);
+  line-height: 1;
+}
+
+.condicao {
+  margin: 4px 0 10px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--rosa-texto);
+}
+
+.chuva-info {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--rosa-texto-suave);
+}
+
+.localizacao {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rosa-texto-suave);
+}
+
+/* ---------------------------------------------------------
+   Frase inspiradora
+   --------------------------------------------------------- */
+.frase-inspiradora {
+  text-align: center;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--branco);
+  text-shadow: 0 1px 6px rgba(224, 37, 126, 0.3);
+  margin: 0 0 34px;
+  padding: 0 10px;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
+   Próximos 4 dias
+   --------------------------------------------------------- */
+.proximos-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.proximos-titulo {
+  margin: 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rosa-texto);
+}
+
+.coracao-topo {
+  font-size: 1.4rem;
+  color: var(--rosa-texto-suave);
+}
+
+.dias-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.dia-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  padding: 14px 18px;
+}
+
+.dia-nome-data {
+  min-width: 74px;
+}
+
+.dia-nome {
+  margin: 0;
+  font-weight: 700;
+  color: var(--rosa-texto);
+  font-size: 1rem;
+}
+
+.dia-data {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--rosa-texto-suave);
+}
+
+.dia-icone {
+  flex-shrink: 0;
+}
+
+.dia-chuva {
+  flex: 1;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rosa-texto-suave);
+}
+
+.dia-temps {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--rosa-texto);
+  white-space: nowrap;
+}
+
+.dia-temps .dia-min {
+  font-weight: 600;
+  color: var(--rosa-texto-suave);
+  margin-left: 4px;
+}
+
+/* ---------------------------------------------------------
+   Rodapé
+   --------------------------------------------------------- */
+.app-footer {
+  text-align: center;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.coracao-rodape {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.app-footer p {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ---------------------------------------------------------
+   Telas pequenas
+   --------------------------------------------------------- */
+@media (max-width: 340px) {
+  .circulo-conteudo {
+    width: 260px;
+    height: 260px;
+  }
+}
