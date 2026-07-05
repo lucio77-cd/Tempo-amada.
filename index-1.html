@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para você, todo dia 💗</title>
+
+  <!-- Fontes: uma display arredondada e afetuosa + uma de apoio para números/dados -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Baloo+2:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Fundo decorativo de brilho, puramente visual -->
+  <div class="glitter-layer" aria-hidden="true"></div>
+
+  <div class="app">
+
+    <!-- Cabeçalho -->
+    <header class="app-header">
+      <p class="saudacao" id="saudacao">Bom dia, meu amor ✨</p>
+      <h1 class="cidade" id="cidade">Carregando localização...</h1>
+      <p class="data-hoje" id="data-hoje"></p>
+    </header>
+
+    <!-- Card de destaque: o tempo de amanhã -->
+    <section class="card-amanha" id="card-amanha" aria-live="polite">
+      <p class="etiqueta">Amanhã</p>
+
+      <div class="amanha-conteudo">
+        <div class="amanha-gif-wrap">
+          <img
+            id="gif-gato"
+            class="amanha-gif"
+            src=""
+            alt="Gatinho ilustrando o clima de amanhã"
+          />
+          <span class="giphy-credito">Powered by GIPHY</span>
+        </div>
+
+        <div class="amanha-info">
+          <p class="amanha-temp">
+            <span id="temp-max">--°</span>
+            <span class="temp-min" id="temp-min">--°</span>
+          </p>
+          <p class="amanha-condicao" id="amanha-condicao">Verificando o céu...</p>
+          <p class="amanha-chuva" id="amanha-chuva"></p>
+        </div>
+      </div>
+
+      <p class="frase-inspiradora" id="frase-inspiradora">
+        Toda previsão é só um convite para o dia que a gente faz acontecer 💗
+      </p>
+    </section>
+
+    <!-- Próximos 4 dias -->
+    <section class="proximos-dias">
+      <h2 class="proximos-titulo">Nos próximos dias</h2>
+      <div class="dias-lista" id="dias-lista">
+        <!-- Os 4 cards de dia serão inseridos aqui via JavaScript (main.js) -->
+        <p class="dias-carregando" id="dias-carregando">Buscando a previsão...</p>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <p>feito com carinho, todos os dias 🌸</p>
+    </footer>
+
+  </div>
+
+  <!-- Módulos JS (serão criados nos próximos passos) -->
+  <script src="js/config.js"></script>
+  <script src="js/clima.js"></script>
+  <script src="js/frases.js"></script>
+  <script src="js/gif.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
