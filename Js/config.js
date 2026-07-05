@@ -7,9 +7,12 @@ const CONFIG = {
     longitude: -51.4089,
   },
 
+  // Chave do OpenWeatherMap (gerar em https://home.openweathermap.org/api_keys)
+  // Usa o endpoint gratuito "5 day / 3 hour forecast" (/data/2.5/forecast)
+  owmApiKey: "COLOQUE_SUA_CHAVE_AQUI",
+
   // Chave do GIPHY (gerar em https://developers.giphy.com)
   giphyApiKey: "COLOQUE_SUA_CHAVE_AQUI",
 
   timezone: "America/Sao_Paulo",
 };
-
