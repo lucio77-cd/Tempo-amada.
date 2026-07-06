@@ -56,25 +56,51 @@ const Clima = (() => {
     const url =
       `https://api.open-meteo.com/v1/forecast` +
       `?latitude=${latitude}&longitude=${longitude}` +
-      `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
+      `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,apparent_temperature_max` +
+      `&hourly=temperature_2m,weathercode` +
       `&timezone=${encodeURIComponent(CONFIG.timezone)}` +
       `&forecast_days=6`;
 
     const resposta = await fetch(url);
     if (!resposta.ok) throw new Error("Open-Meteo indisponível");
     const dados = await resposta.json();
-    const { time, weathercode, temperature_2m_max, temperature_2m_min, precipitation_probability_max } = dados.daily;
+    const {
+      time, weathercode, temperature_2m_max, temperature_2m_min,
+      precipitation_probability_max, apparent_temperature_max,
+    } = dados.daily;
 
     const porData = {};
     for (let i = 1; i <= 4; i++) {
       porData[time[i]] = {
         tempMax: temperature_2m_max[i],
         tempMin: temperature_2m_min[i],
+        sensacao: apparent_temperature_max[i],
         chanceChuva: precipitation_probability_max[i] ?? 0,
         categoria: categoriaPorCodigoOpenMeteo(weathercode[i]),
       };
     }
-    return porData;
+
+    // Extrai a previsão hora a hora do dia de amanhã.
+    // A Open-Meteo sempre começa o array horário às 00h do dia 0 (hoje),
+    // então o dia 1 (amanhã) começa exatamente no índice 24 — mais confiável
+    // do que tentar casar strings de data/hora.
+    const baseIndiceAmanha = 24;
+    const horasDesejadas = [0, 3, 6, 9, 12, 15, 18, 21];
+    const horaria = horasDesejadas
+      .map((hora) => {
+        const indice = baseIndiceAmanha + hora;
+        const temp = dados.hourly.temperature_2m[indice];
+        const codigo = dados.hourly.weathercode[indice];
+        if (temp === undefined) return null;
+        return {
+          hora,
+          temp: Math.round(temp),
+          categoria: categoriaPorCodigoOpenMeteo(codigo),
+        };
+      })
+      .filter(Boolean);
+
+    return { porData, horaria };
   }
 
   // ---------------------------------------------------------
@@ -150,13 +176,16 @@ const Clima = (() => {
       const tempMax = Math.round((dataOpenMeteo.tempMax + dataOWM.tempMax) / 2);
       const tempMin = Math.round((dataOpenMeteo.tempMin + dataOWM.tempMin) / 2);
       const chanceChuva = Math.round((dataOpenMeteo.chanceChuva + dataOWM.chanceChuva) / 2);
+      const sensacaoOM = dataOpenMeteo.sensacao ?? dataOpenMeteo.tempMax;
+      const sensacaoOWM = dataOWM.sensacao ?? dataOWM.tempMax;
+      const sensacao = Math.round((sensacaoOM + sensacaoOWM) / 2);
 
       const categoria =
         SEVERIDADE[dataOpenMeteo.categoria] >= SEVERIDADE[dataOWM.categoria]
           ? dataOpenMeteo.categoria
           : dataOWM.categoria;
 
-      return { tempMax, tempMin, chanceChuva, categoria };
+      return { tempMax, tempMin, sensacao, chanceChuva, categoria };
     }
 
     // Se só uma fonte respondeu, usamos ela sozinha
@@ -164,6 +193,7 @@ const Clima = (() => {
     return {
       tempMax: Math.round(unica.tempMax),
       tempMin: Math.round(unica.tempMin),
+      sensacao: Math.round(unica.sensacao ?? unica.tempMax),
       chanceChuva: Math.round(unica.chanceChuva),
       categoria: unica.categoria,
     };
@@ -178,7 +208,9 @@ const Clima = (() => {
       buscarOpenWeatherMap(),
     ]);
 
-    const dadosOM = resultadoOM.status === "fulfilled" ? resultadoOM.value : null;
+    const omOk = resultadoOM.status === "fulfilled" ? resultadoOM.value : null;
+    const dadosOM = omOk ? omOk.porData : null;
+    const horaria = omOk ? omOk.horaria : [];
     const dadosOWM = resultadoOWM.status === "fulfilled" ? resultadoOWM.value : null;
 
     if (!dadosOM && !dadosOWM) {
@@ -205,6 +237,7 @@ const Clima = (() => {
         condicaoTexto: TEXTO_POR_CATEGORIA[combinado.categoria],
         tempMax: combinado.tempMax,
         tempMin: combinado.tempMin,
+        sensacao: combinado.sensacao,
         chanceChuva: combinado.chanceChuva,
         vaiChover: combinado.chanceChuva >= 40,
         fontes: {
@@ -214,9 +247,16 @@ const Clima = (() => {
       };
     });
 
+    // Encontra o dia com maior chance de chuva entre os 4, para o card de destaque
+    const diaComMaisChuva = dias.reduce((maior, atual) =>
+      atual.chanceChuva > maior.chanceChuva ? atual : maior
+    , dias[0]);
+
     return {
       cidade: CONFIG.cidade.nome,
       dias,
+      horaria,
+      destaqueChuva: diaComMaisChuva,
     };
   }
 
